@@ -24,6 +24,5 @@ def create_app():
     return app
 
 
-if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=True, host="0.0.0.0", port=app.config["PORT"])
+# ✅ Vercel looks for this variable automatically
+app = create_app()
