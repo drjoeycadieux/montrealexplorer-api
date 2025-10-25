@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Login | Montreal Explorer Backend</title>
+  <title>Backend Login | Montreal Explorer</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f8f9fa;
+      background: linear-gradient(135deg, #f0f2f5, #d9e2ec);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -15,41 +15,64 @@
     }
     .login-box {
       background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 320px;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 350px;
       text-align: center;
+      transition: transform 0.2s;
+    }
+    .login-box:hover {
+      transform: translateY(-4px);
+    }
+    h2 {
+      margin-bottom: 1.5rem;
+      color: #2c3e50;
     }
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border 0.2s;
+    }
+    input:focus {
+      border-color: #007bff;
+      outline: none;
     }
     button {
       background: #007bff;
-      color: white;
+      color: #fff;
       border: none;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       width: 100%;
       cursor: pointer;
-      transition: background 0.3s;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
     }
     button:hover {
       background: #0056b3;
+      transform: translateY(-2px);
     }
     .message {
-      color: red;
+      color: #e74c3c;
       font-size: 0.9rem;
+      margin: 0.5rem 0;
+    }
+    .footer {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: #7f8c8d;
     }
   </style>
 </head>
 <body>
   <div class="login-box">
-    <h2>Login</h2>
+    <h2>Backend Login</h2>
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -62,6 +85,9 @@
       <input type="password" name="password" placeholder="Password" required>
       <button type="submit">Login</button>
     </form>
+    <div class="footer">
+      Montreal Explorer Backend
+    </div>
   </div>
 </body>
 </html>
