@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Montreal Explorer Backend Services</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0e7ff, #f8f9fa);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      color: #1e293b;
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+    header a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    header a:hover {
+      text-decoration: underline;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 900px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+    .card h3 {
+      color: #1e293b;
+      margin-bottom: 0.75rem;
+    }
+    .card p {
+      color: #475569;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+    .card a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .card a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 3rem;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #4f46e5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Montreal Explorer Backend Services</h1>
+    <p>
+      For the main site, visit 
+      <a href="https://montrealexplorer.online" target="_blank">montrealexplorer.online</a>
+    </p>
+  </header>
+
+  <section class="services-grid">
+    <div class="card">
+      <h3>🌐 API Root</h3>
+      <p>Returns a simple “Hello World” message with a dynamic environment variable.</p>
+      <a href="/">Try Endpoint →</a>
+    </div>
+
+    <div class="card">
+      <h3>🔒 Login Portal</h3>
+      <p>Access the backend dashboard using secure credentials.</p>
+      <a href="/index.html">Go to Login →</a>
+    </div>
+
+    <div class="card">
+      <h3>🛰️ Services Page</h3>
+      <p>Overview of available backend routes and endpoints for Montreal Explorer.</p>
+      <a href="/services">Refresh Page →</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; {{ 2025 }} Montreal Explorer API – All rights reserved.</p>
+  </footer>
+</body>
+</html>
