@@ -8,18 +8,16 @@ def create_app():
     app.config["NAME"] = os.getenv("NAME", "World")
     app.config["PORT"] = int(os.getenv("PORT", 3000))
 
-    # Dummy credentials (replace with DB or environment vars later)
+    # Dummy credentials
     USERNAME = os.getenv("ADMIN_USERNAME", "admin")
     PASSWORD = os.getenv("ADMIN_PASSWORD", "password123")
 
     @app.route("/")
     def hello_world():
-        name = app.config["NAME"]
-        return render_template("index.html", name=name)
+        return render_template("index.html", name=app.config["NAME"], session=session)
 
     @app.route("/services")
     def services():
-        # Only allow access if logged in
         if not session.get("logged_in"):
             flash("Please log in to access services.")
             return redirect(url_for("login"))
@@ -27,19 +25,16 @@ def create_app():
 
     @app.route("/login", methods=["GET", "POST"])
     def login():
-        """Login page for Montreal Explorer backend."""
         if request.method == "POST":
             username = request.form.get("username")
             password = request.form.get("password")
-
             if username == USERNAME and password == PASSWORD:
                 session["logged_in"] = True
                 flash("Login successful!", "success")
                 return redirect(url_for("services"))
             else:
                 flash("Invalid credentials. Please try again.", "danger")
-
-        return render_template("login.html")
+        return render_template("login.html")  # Use your template if it exists
 
     @app.route("/logout")
     def logout():
@@ -49,6 +44,5 @@ def create_app():
 
     return app
 
-
-# ✅ Required by Vercel
+# Required by Vercel
 app = create_app()
