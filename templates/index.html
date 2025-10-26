@@ -1,173 +1,137 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Backend | Montreal Explorer</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f0f2f5, #d9e2ec);
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 2rem;
-    }
-    .container {
-      background: #fff;
-      padding: 3rem 2.5rem;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      max-width: 700px;
-      width: 100%;
-      transition: transform 0.2s;
-    }
-    .container:hover { transform: translateY(-3px); }
-    h1 { color: #2c3e50; margin-bottom: 1rem; }
-    p { color: #7f8c8d; font-size: 1rem; }
-    .time, .message { margin-top: 1rem; font-weight: bold; color: #007bff; font-size: 1.1rem; }
-    .system-info, .weather, .blog-posts, .blog-form { margin-top: 1.5rem; text-align: left; }
-    .system-info { background: #f8f9fa; border-radius: 10px; padding: 1rem; box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); }
-    .system-info p { margin: 0.4rem 0; color: #34495e; font-size: 0.95rem; }
-    .weather { font-weight: 500; color: #2c3e50; }
-    .blog-post { border-bottom: 1px solid #e0e0e0; padding: 0.8rem 0; }
-    .blog-post:last-child { border-bottom: none; }
-    .blog-post h3 { margin: 0 0 0.3rem 0; font-size: 1.1rem; color: #2c3e50; }
-    .blog-post p { margin: 0; font-size: 0.95rem; color: #555; }
-    input, textarea { width: 100%; padding: 0.6rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
-    button { margin-top: 1rem; background: #007bff; color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: background 0.3s; }
-    button:hover { background: #0056b3; }
-    .footer { margin-top: 1.5rem; font-size: 0.85rem; color: #95a5a6; text-align: center; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montreal Explorer Backend</title>
+    <!-- Bootstrap CDN for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <div class="container">
-    <h1>Montreal Explorer Backend</h1>
-    <p class="message">{{ message }}</p>
+<body class="bg-light">
+    <div class="container my-5">
+        <h1 class="mb-4">Montreal Explorer Backend 🗺️</h1>
 
-    <div class="time" id="time">Current Time (Montreal): {{ current_time }}</div>
+        <!-- Time & Message -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Current Montreal Time:</h5>
+                <p class="card-text">{{ current_time }}</p>
+                <h5 class="card-title">Message:</h5>
+                <p class="card-text">{{ message }}</p>
+            </div>
+        </div>
 
-    <div class="system-info" id="system-info">
-      <p><strong>🧠 Python:</strong> {{ system_info['Python Version'] }}</p>
-      <p><strong>💻 OS:</strong> {{ system_info['Operating System'] }}</p>
-      <p><strong>⚙️ CPU Usage:</strong> {{ system_info['CPU Usage'] }}</p>
-      <p><strong>🧮 Memory Usage:</strong> {{ system_info['Memory Usage'] }}</p>
-      <p><strong>⏱️ Uptime:</strong> {{ system_info['Server Uptime (seconds)'] }} sec</p>
+        <!-- System Info -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">System Info</h4>
+                <ul class="list-group list-group-flush">
+                    {% for key, value in system_info.items() %}
+                        <li class="list-group-item"><strong>{{ key }}:</strong> {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Blog Posts -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Blog Posts</h4>
+                <div id="posts">
+                    {% if posts %}
+                        {% for post in posts %}
+                            <div class="mb-3 p-3 border rounded bg-white">
+                                <h5>{{ post.title }}</h5>
+                                <p>{{ post.content }}</p>
+                                <p class="text-muted"><em>By {{ post.author }} on {{ post.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</em></p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No blog posts yet. Create some below!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Blog Post Form -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Create New Blog Post</h4>
+                <form id="blogForm">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" id="title" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea id="content" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author</label>
+                        <input type="text" id="author" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Post</button>
+                </form>
+                <div id="formMessage" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-5 mb-3 text-muted">
+            &copy; {{ current_time[:4] }} Montreal Explorer
+        </footer>
     </div>
 
-    {% if weather %}
-      <div class="weather">🌤️ {{ weather.temperature }} — {{ weather.description }}</div>
-    {% endif %}
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <button id="refresh-btn">🔁 Refresh Info</button>
+    <!-- JavaScript to handle form submission -->
+    <script>
+        const form = document.getElementById('blogForm');
+        const formMessage = document.getElementById('formMessage');
+        const postsDiv = document.getElementById('posts');
 
-    <!-- Blog posts section -->
-    <div class="blog-posts" id="blog-posts">
-      <h2>Latest Blog Posts</h2>
-      <p>Loading posts...</p>
-    </div>
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    <!-- Blog form section -->
-    <div class="blog-form">
-      <h2>Create New Post</h2>
-      <input type="text" id="post-title" placeholder="Title" />
-      <textarea id="post-content" placeholder="Content" rows="4"></textarea>
-      <input type="text" id="post-author" placeholder="Author" />
-      <button id="create-post-btn">Create Post</button>
-    </div>
+            const data = {
+                title: document.getElementById('title').value,
+                content: document.getElementById('content').value,
+                author: document.getElementById('author').value
+            };
 
-    <div class="footer">
-      Montreal Explorer Backend © 2025
-    </div>
-  </div>
+            try {
+                const res = await fetch('/api/blog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
 
-  <script>
-    // Refresh backend info
-    async function refreshInfo() {
-      try {
-        const [timeRes, sysRes] = await Promise.all([
-          fetch("/api/time"),
-          fetch("/api/system")
-        ]);
-        const timeData = await timeRes.json();
-        const sysData = await sysRes.json();
+                const result = await res.json();
 
-        document.getElementById("time").textContent =
-          "Current Time (Montreal): " + timeData.montreal_time;
+                if (res.ok) {
+                    formMessage.innerHTML = '<div class="alert alert-success">Post created successfully!</div>';
 
-        const sysInfoDiv = document.getElementById("system-info");
-        sysInfoDiv.innerHTML = `
-          <p><strong>🧠 Python:</strong> ${sysData["Python Version"]}</p>
-          <p><strong>💻 OS:</strong> ${sysData["Operating System"]}</p>
-          <p><strong>⚙️ CPU Usage:</strong> ${sysData["CPU Usage"]}</p>
-          <p><strong>🧮 Memory Usage:</strong> ${sysData["Memory Usage"]}</p>
-          <p><strong>⏱️ Uptime:</strong> ${sysData["Server Uptime (seconds)"]} sec</p>
-        `;
-      } catch (err) {
-        alert("Error refreshing info: " + err);
-      }
-    }
+                    // Add the new post to the posts list without refreshing
+                    const postHTML = `
+                        <div class="mb-3 p-3 border rounded bg-white">
+                            <h5>${result.title}</h5>
+                            <p>${result.content}</p>
+                            <p class="text-muted"><em>By ${result.author} on ${result.created_at}</em></p>
+                        </div>
+                    `;
+                    postsDiv.insertAdjacentHTML('afterbegin', postHTML);
 
-    document.getElementById("refresh-btn").addEventListener("click", refreshInfo);
-
-    // Load blog posts
-    async function loadBlogPosts() {
-      try {
-        const res = await fetch("/api/blog");
-        const posts = await res.json();
-        const container = document.getElementById("blog-posts");
-
-        if (!posts.length) {
-          container.innerHTML = "<p>No blog posts available.</p>";
-          return;
-        }
-
-        container.innerHTML = "<h2>Latest Blog Posts</h2>";
-        posts.forEach(post => {
-          const postDiv = document.createElement("div");
-          postDiv.classList.add("blog-post");
-          postDiv.innerHTML = `
-            <h3>${post.title}</h3>
-            <p>${post.content}</p>
-            <p style="font-size:0.85rem; color:#777;">By ${post.author} on ${new Date(post.created_at).toLocaleString()}</p>
-          `;
-          container.appendChild(postDiv);
+                    // Clear form fields
+                    form.reset();
+                } else {
+                    formMessage.innerHTML = '<div class="alert alert-danger">' + result.error + '</div>';
+                }
+            } catch (err) {
+                formMessage.innerHTML = '<div class="alert alert-danger">Error submitting post.</div>';
+                console.error(err);
+            }
         });
-      } catch (err) {
-        console.error("Error loading blog posts:", err);
-      }
-    }
-
-    // Create new blog post
-    document.getElementById("create-post-btn").addEventListener("click", async () => {
-      const title = document.getElementById("post-title").value.trim();
-      const content = document.getElementById("post-content").value.trim();
-      const author = document.getElementById("post-author").value.trim();
-
-      if (!title || !content || !author) {
-        alert("All fields are required!");
-        return;
-      }
-
-      try {
-        const res = await fetch("/api/blog", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, content, author })
-        });
-
-        if (!res.ok) throw new Error("Failed to create post");
-        document.getElementById("post-title").value = "";
-        document.getElementById("post-content").value = "";
-        document.getElementById("post-author").value = "";
-        loadBlogPosts(); // Reload posts
-      } catch (err) {
-        alert(err);
-      }
-    });
-
-    // Initial load
-    loadBlogPosts();
-  </script>
+    </script>
 </body>
 </html>

@@ -8,6 +8,10 @@ import random
 import os
 
 app = Flask(__name__)
+
+# ------------------------------
+#  Database setup
+# ------------------------------
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -49,7 +53,7 @@ def get_system_info():
     }
 
 # ------------------------------
-#  Create tables (app context required)
+#  Create tables (app context)
 # ------------------------------
 with app.app_context():
     db.create_all()
@@ -59,7 +63,6 @@ with app.app_context():
 # ------------------------------
 @app.route("/")
 def home():
-    """Render main backend page with dynamic info."""
     posts = Post.query.order_by(Post.created_at.desc()).all()
     return render_template(
         "index.html",
@@ -69,7 +72,7 @@ def home():
         posts=posts
     )
 
-# Blog API
+# Blog API endpoints
 @app.route("/api/blog", methods=["GET"])
 def get_blog_posts():
     posts = Post.query.order_by(Post.created_at.desc()).all()
@@ -83,7 +86,7 @@ def get_blog_posts():
 
 @app.route("/api/blog", methods=["POST"])
 def create_blog_post():
-    data = request.json
+    data = request.get_json(force=True)
     if not data.get("title") or not data.get("content") or not data.get("author"):
         return jsonify({"error": "Missing fields"}), 400
 
@@ -94,6 +97,7 @@ def create_blog_post():
     )
     db.session.add(new_post)
     db.session.commit()
+
     return jsonify({
         "id": new_post.id,
         "title": new_post.title,
@@ -102,7 +106,7 @@ def create_blog_post():
         "created_at": new_post.created_at.isoformat()
     }), 201
 
-# Other APIs (system info, time) can stay the same
+# Other utility APIs
 @app.route("/api/time")
 def api_time():
     return jsonify({"montreal_time": get_montreal_time()})
@@ -112,7 +116,7 @@ def api_system():
     return jsonify(get_system_info())
 
 # ------------------------------
-#  Run server
+#  Run server (development only)
 # ------------------------------
 if __name__ == "__main__":
     app.run(debug=True)
