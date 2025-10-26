@@ -137,6 +137,8 @@ def get_blog_posts():
         "created_at": p.created_at.isoformat()
     } for p in posts])
 
+# /api/blog This is the api endpoint.
+
 @app.route("/api/blog", methods=["POST"])
 def create_blog_post():
     data = request.get_json(force=True)
