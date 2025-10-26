@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Backend Login | Montreal Explorer</title>
+  <title>Backend | Montreal Explorer</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,81 +12,60 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-    }
-    .login-box {
-      background: #fff;
-      padding: 2.5rem 2rem;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      width: 350px;
       text-align: center;
+    }
+
+    .container {
+      background: #fff;
+      padding: 3rem 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      max-width: 450px;
+      width: 90%;
       transition: transform 0.2s;
     }
-    .login-box:hover {
+
+    .container:hover {
       transform: translateY(-4px);
     }
-    h2 {
-      margin-bottom: 1.5rem;
+
+    h1 {
       color: #2c3e50;
+      margin-bottom: 1rem;
     }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+
+    p {
+      color: #7f8c8d;
       font-size: 1rem;
-      transition: border 0.2s;
+      margin-bottom: 1.5rem;
     }
-    input:focus {
-      border-color: #007bff;
-      outline: none;
-    }
-    button {
+
+    .tag {
+      display: inline-block;
       background: #007bff;
       color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 10px;
-      width: 100%;
-      cursor: pointer;
-      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
       font-weight: bold;
-      transition: background 0.3s, transform 0.2s;
-    }
-    button:hover {
-      background: #0056b3;
-      transform: translateY(-2px);
-    }
-    .message {
-      color: #e74c3c;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
       font-size: 0.9rem;
-      margin: 0.5rem 0;
     }
+
     .footer {
-      margin-top: 1.5rem;
-      font-size: 0.8rem;
-      color: #7f8c8d;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #95a5a6;
     }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Backend Login</h2>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <p class="message">{{ message }}</p>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-    <form method="POST">
-      <input type="text" name="username" placeholder="Username" required>
-      <input type="password" name="password" placeholder="Password" required>
-      <button type="submit">Login</button>
-    </form>
+  <div class="container">
+    <h1>Montreal Explorer</h1>
+    <p>Welcome to the official backend page.</p>
+    <span class="tag">Backend Access</span>
     <div class="footer">
-      Montreal Explorer Backend
+      Montreal Explorer Backend © 2025
     </div>
   </div>
 </body>
